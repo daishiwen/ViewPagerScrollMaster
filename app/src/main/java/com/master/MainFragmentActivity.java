@@ -18,7 +18,7 @@ public class MainFragmentActivity extends FragmentActivity implements OnClickLis
 
     private HeaderView mCarouselContainer;
     private RadioGroup mRadioGroup;
-    private ViewPager mViewPager;
+    private ExViewPager mViewPager;
     private CommonFragmentPagerAdapter mPagerAdapter;
     public float[] Y_COORDINATE = new float[3];
 
@@ -81,7 +81,8 @@ public class MainFragmentActivity extends FragmentActivity implements OnClickLis
         mPagerAdapter.add(ListFragment2.class, new Bundle());
         mPagerAdapter.add(ListFragment3.class, new Bundle());
 
-        mViewPager = (ViewPager) findViewById(R.id.carousel_pager);
+        mViewPager = (ExViewPager) findViewById(R.id.carousel_pager);
+        mViewPager.setScrollEnabled(false);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(0);
 
