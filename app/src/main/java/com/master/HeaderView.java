@@ -11,8 +11,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 
-import java.util.logging.LogManager;
-
 /**
  * @author Daisw
  */
@@ -247,15 +245,11 @@ public class HeaderView extends FrameLayout {
      */
     public void moveToYCoordinate(int tabIndex, float y) {
 
-        Log.i("daisw", "old: " + getStoredYCoordinateForTab(tabIndex) + " y: " + y);
+        if (tabIndex == mCurrentTabIndex && y != getStoredYCoordinateForTab(tabIndex)) {
 
-        if (tabIndex != mCurrentTabIndex && y == getStoredYCoordinateForTab(tabIndex))
-            return;
-
-        Log.e("daisw", "tabIndex: " + tabIndex + " y: " + y);
-
-        storeYCoordinate(tabIndex, y);
-        restoreYCoordinate(tabIndex);
+            storeYCoordinate(tabIndex, y);
+            restoreYCoordinate(tabIndex);
+        }
     }
 
     public void setCurrentTab(int index) {
