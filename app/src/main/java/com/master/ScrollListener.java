@@ -14,7 +14,7 @@ public class ScrollListener implements OnScrollListener {
     private HeaderView mCarousel;
     private int mPageIndex;
     private boolean isScroll = false;
-//    private OnScrollListener mOnScrollListener;
+    private OnScrollListener mOnScrollListener;
 
     public ScrollListener(HeaderView carouselHeader, int pageIndex) {
 
@@ -22,21 +22,18 @@ public class ScrollListener implements OnScrollListener {
         mPageIndex = pageIndex;
     }
 
-//    public void setOnScrollListener(OnScrollListener onScrollListener) {
-//
-//        mOnScrollListener = onScrollListener;
-//    }
+    public void setOnScrollListener(OnScrollListener onScrollListener) {
 
-//    public interface OnScrollListener {
-//
-//        void onScroll(boolean isBottom);
-//    }
+        mOnScrollListener = onScrollListener;
+    }
+
+    public interface OnScrollListener {
+
+        void onScroll(float distance);
+    }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-//        if (null != mOnScrollListener && mPageIndex == HeaderView.TAB_INDEX_SECOND && firstVisibleItem != 0)
-//            mOnScrollListener.onScroll(visibleItemCount + firstVisibleItem == totalItemCount);
 
         if (mCarousel == null || mCarousel.isTabCarouselIsAnimating())
             return;
@@ -54,8 +51,13 @@ public class ScrollListener implements OnScrollListener {
 
         float y = view.getChildAt(firstVisibleItem).getTop();
         float amtToScroll = Math.max(y, -mCarousel.getAllowedVerticalScrollLength());
-        if (isScroll)
+        if (isScroll) {
+
             mCarousel.moveToYCoordinate(mPageIndex, amtToScroll);
+
+            if (mOnScrollListener != null)
+                mOnScrollListener.onScroll(amtToScroll);
+        }
     }
 
     @Override

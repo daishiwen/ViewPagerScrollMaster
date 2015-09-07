@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -247,7 +246,9 @@ public class HeaderView extends FrameLayout {
 
         if (tabIndex == mCurrentTabIndex && y != getStoredYCoordinateForTab(tabIndex)) {
 
-            storeYCoordinate(tabIndex, y);
+            storeYCoordinate(0, y);
+            storeYCoordinate(1, y);
+            storeYCoordinate(2, y);
             restoreYCoordinate(tabIndex);
         }
     }

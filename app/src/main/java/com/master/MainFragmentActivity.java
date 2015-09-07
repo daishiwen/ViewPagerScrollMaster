@@ -2,10 +2,12 @@ package com.master;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
@@ -18,6 +20,7 @@ public class MainFragmentActivity extends FragmentActivity implements OnClickLis
     private RadioGroup mRadioGroup;
     private ViewPager mViewPager;
     private CommonFragmentPagerAdapter mPagerAdapter;
+    public float[] Y_COORDINATE = new float[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +85,6 @@ public class MainFragmentActivity extends FragmentActivity implements OnClickLis
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(0);
 
-        // UnderlinePageIndicator
-//        UnderlinePageIndicator indicator = (UnderlinePageIndicator) findViewById(R.id.indicatorUnderLine);
-//        indicator.setViewPager(mViewPager);
-//        indicator.setSelectedColor(getResources().getColor(R.color.green2b));
-//        indicator.setOnPageChangeListener(new OnPageChangeListener() {
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
             @Override
@@ -114,8 +112,18 @@ public class MainFragmentActivity extends FragmentActivity implements OnClickLis
             @Override
             public void onPageScrollStateChanged(int state) {
 
-                if (state == ViewPager.SCROLL_STATE_SETTLING)
-                    mCarouselContainer.restoreYCoordinate(100, mViewPager.getCurrentItem());
+                if (state == ViewPager.SCROLL_STATE_SETTLING) {
+
+                    int currentIndex = mViewPager.getCurrentItem();
+                    float distance = mCarouselContainer.getStoredYCoordinateForTab(currentIndex);
+
+                    if (distance != Y_COORDINATE[currentIndex]) {
+
+                        ListView lv = ((ListFragment) mPagerAdapter.getItem(currentIndex)).getListView();
+                        float scrollDistance = distance - Y_COORDINATE[currentIndex];
+                        lv.smoothScrollBy(-(int) scrollDistance, 0);
+                    }
+                }
             }
         });
     }
